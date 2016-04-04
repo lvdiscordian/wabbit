@@ -22,6 +22,8 @@ type (
 
 		Cancel(consumer string, noWait bool) error
 		ExchangeDeclare(name, kind string, opt Option) error
+		ExchangeBind(destination, key, source, string, opt Option) error
+		ExchangeUnbind(destination, key, source, string, opt Option) error
 		QueueDeclare(name string, args Option) (Queue, error)
 		QueueDelete(name string, args Option) (int, error)
 		QueueBind(name, key, exchange string, opt Option) error
