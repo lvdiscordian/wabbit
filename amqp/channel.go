@@ -145,6 +145,58 @@ func (ch *Channel) ExchangeDeclare(name, kind string, opt wabbit.Option) error {
 	return ch.Channel.ExchangeDeclare(name, kind, durable, autoDelete, internal, noWait, args)
 }
 
+func (ch *Channel) ExchangeUnbind(destination, key, source string, opt wabbit.Option) error{
+	var (
+		noWait bool
+		args amqp.Table
+	)
+
+	if v, ok := opt["noWait"]; ok {
+		noWait, ok = v.(bool)
+
+		if !ok {
+			return errors.New("noWait option is of type bool")
+		}
+	}
+
+	if v, ok := opt["args"]; ok {
+		args, ok = v.(amqp.Table)
+
+		if !ok {
+			return errors.New("args is of type amqp.Table")
+		}
+	}
+
+	return ch.Channel.ExchangeUnbind(destination, key, source, noWait, args)
+}
+
+// ExchangeBind allows us to bind two exchanges together via the route key. source --(key)--> destination
+func (ch *Channel) ExchangeBind(destination, key, source string, opt wabbit.Option) error {
+	var (
+		noWait bool
+		args amqp.Table
+	)
+
+	if v, ok := opt["noWait"]; ok {
+		noWait, ok = v.(bool)
+
+		if !ok {
+			return errors.New("noWait option is of type bool")
+		}
+	}
+
+	if v, ok := opt["args"]; ok {
+		args, ok = v.(amqp.Table)
+
+		if !ok {
+			return errors.New("args is of type amqp.Table")
+		}
+	}
+
+	return ch.Channel.ExchangeBind(destination, key, source, noWait, args)
+}
+
+
 func (ch *Channel) QueueUnbind(name, route, exchange string, _ wabbit.Option) error {
 	return ch.Channel.QueueUnbind(name, route, exchange, nil)
 }
